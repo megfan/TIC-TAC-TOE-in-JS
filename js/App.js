@@ -1,5 +1,5 @@
 const PLAYER_TOKEN = 'X';
-const COMPUTER_TOKEN = 'Y';
+const COMPUTER_TOKEN = 'O';
 
 $(document).ready(function(){
 
@@ -52,18 +52,60 @@ $(document).ready(function(){
         return null;
     }
     
-    function moveAI(){
-        for(var i = 0; i < 3; i++){
-            for(var j = 0; j < 3; j++){
-                if(grid[i][j] === ' '){
-                    return {
-                        i: i,
-                        j: j
-                    };
+    function minmax(newGrid, depth, player){
+        const gameState = isGameOver(newGrid);
+        if(gameState === false){
+            const values = [];
+            
+            for(var i = 0 ; i < 3; i++){
+                for(var j = 0 ; j < 3; j++){
+                    const gridCopy = _.cloneDeep(newGrid);
+                    if(gridCopy[i][j] !== ' ') continue;
+                    gridCopy[i][j] = player;
+                    const value = minmax(gridCopy, depth + 1, (player === PLAYER_TOKEN) 
+                    ? COMPUTER_TOKEN : PLAYER_TOKEN)
+                    values.push({
+                        cost: value,
+                        cell: {
+                            i: i, 
+                            j: j
+                        }
+                    });    
                 }
             }
+            if (player === COMPUTER_TOKEN){
+                const max = _.maxBy(values, (v) => {
+                    return v.cost;
+                });
+                if(depth === 0) {
+                    return max.cell;
+                }else{
+                    return max.cost;
+                }
+            }else {
+                const min = _.minBy(values, (v) => {
+                    return v.cost;
+                });
+                if(depth === 0) {
+                    return min.cell;
+                }else{
+                    return min.cost;
+                }
+            }
+
+        }else if(gameState === null){
+            return 0;
+        }else if(gameState === PLAYER_TOKEN){
+            return depth - 10;
+        }else if(gameState === COMPUTER_TOKEN){
+            return 10 - depth;
         }
-        return null;
+    }
+
+    function moveAI(){
+        
+        return minmax(grid, 0, COMPUTER_TOKEN);
+
     }
     
     $('.col').click(function(){
