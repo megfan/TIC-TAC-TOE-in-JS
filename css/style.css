@@ -1,7 +1,10 @@
 body{
     margin: 0;
     margin-top: 10px;
-    background-color: #a4243b;
+    height: 100vh;
+    background-image: linear-gradient(#273e47, #122025);
+    background-repeat: no-repeat;
+    background-size: auto;
     text-align: center;
     font-family: Lato;
 }
@@ -38,23 +41,26 @@ h1{
     transition: all .5s ease-out;
     transform: scale(1);
     
+    
 }
 .col:hover{
     -webkit-box-shadow: 6px 17px 13px 0px rgba(0,0,0,0.38);
     -moz-box-shadow: 6px 17px 13px 0px rgba(0,0,0,0.38);
     box-shadow: 6px 17px 13px 0px rgba(0,0,0,0.38);
     transform: scale(.95);
+    background-color: #a4243b;
 }
 .clicked{
-    background-color: #d8973c;
+    background-color: #122025;
+    color: #a4243b;
 }
 
 button{
     padding: 10px 20px;
     font-size: 2em;
     margin-top: 30px;
-    color: #a4243b;
-    background-color: #273e47;
+    color:  #273e47;
+    background-color: #a4243b;
     border: none;
 }
 .footer{
@@ -64,4 +70,25 @@ button{
     width: 100vw;
     color: white;
     text-align: center;
+}
+.endgame
+{
+  transition: 1s;
+	display: none;
+	width: 200px;
+	top: 120px;
+	background-color: rgba(205,133,63,0.8);
+	position: absolute;
+	left: 50%;
+	margin-left: -100px;
+	padding-top: 50px;
+	padding-bottom: 50px;
+	text-align: center;
+	border-radius: 5px;
+	color: white;
+	font-size: 2em;
+}
+.circle{
+    background-color: #a4243b;
+    border-radius: 500px;
 }
