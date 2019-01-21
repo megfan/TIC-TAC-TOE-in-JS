@@ -52,72 +52,72 @@ $(document).ready(function(){
         return null;
     }
     
-    function minmax(newGrid, depth, player){
-        const gameState = isGameOver(newGrid);
-        if(gameState === false){
-            const values = [];
+    // function minmax(newGrid, depth, player){
+    //     const gameState = isGameOver(newGrid);
+    //     if(gameState === false){
+    //         const values = [];
             
-            for(var i = 0 ; i < 3; i++){
-                for(var j = 0 ; j < 3; j++){
-                    const gridCopy = _.cloneDeep(newGrid);
-                    if(gridCopy[i][j] !== ' ') continue;
-                    gridCopy[i][j] = player;
-                    const value = minmax(gridCopy, depth + 1, (player === PLAYER_TOKEN)
-                    ? COMPUTER_TOKEN : PLAYER_TOKEN);
-                    values.push({
-                        cost: value,
-                        cell: {
-                            i: i, 
-                            j: j
-                        }
-                    });    
-                }
+    //         for(var i = 0 ; i < 3; i++){
+    //             for(var j = 0 ; j < 3; j++){
+    //                 const gridCopy = _.cloneDeep(newGrid);
+    //                 if(gridCopy[i][j] !== ' ') continue;
+    //                 gridCopy[i][j] = player;
+    //                 const value = minmax(gridCopy, depth + 1, (player === PLAYER_TOKEN)
+    //                 ? COMPUTER_TOKEN : PLAYER_TOKEN);
+    //                 values.push({
+    //                     cost: value,
+    //                     cell: {
+    //                         i: i, 
+    //                         j: j
+    //                     }
+    //                 });    
+    //             }
             
-            if (player === COMPUTER_TOKEN){
-                const max = _.maxBy(values, (v) => {
-                    return v.cost;
-                });
-                if(depth === 0) {
-                    return Math.max.cell;
-                }else{
-                    return Math.max.cost;
-                }
-            }else {
-                const min = _.minBy(values, (v) => {
-                    return v.cost;
-                });
-                if(depth === 0) {
-                    return min.cell;
-                }else{
-                    return min.cost;
-                }
-            }}
+    //         if (player === COMPUTER_TOKEN){
+    //             const max = _.maxBy(values, (v) => {
+    //                 return v.cost;
+    //             });
+    //             if(depth === 0) {
+    //                 return Math.max.cell;
+    //             }else{
+    //                 return Math.max.cost;
+    //             }
+    //         }else {
+    //             const min = _.minBy(values, (v) => {
+    //                 return v.cost;
+    //             });
+    //             if(depth === 0) {
+    //                 return min.cell;
+    //             }else{
+    //                 return min.cost;
+    //             }
+    //         }}
 
-        } else if(gameState === null){
-            return 0;
+    //     } else if(gameState === null){
+    //         return 0;
 
-        } else if(gameState === PLAYER_TOKEN){
-            return depth - 10;
+    //     } else if(gameState === PLAYER_TOKEN){
+    //         return depth - 10;
 
-        } else if(gameState === COMPUTER_TOKEN){
-            return 10 - depth;
-        }
-    }
+    //     } else if(gameState === COMPUTER_TOKEN){
+    //         return 10 - depth;
+    //     }
+    // }
 
     function moveAI(){
         
-        return minmax(grid,0,COMPUTER_TOKEN);
-        // for(var i = 0 ; i < 3; i++){
-        //     for(var j = 0 ; j < 3; j++){
-        //         if(grid[i][j] === ' '){
-        //             return {
-        //                 i:i,
-        //                 j:j
-        //             };
-        //         }
-        //     }
-        // }
-        // return null;
+        // return minmax(grid,0,COMPUTER_TOKEN);
+        for(var i = 0 ; i < 3; i++){
+            for(var j = 0 ; j < 3; j++){
+                if(grid[i][j] === ' '){
+                    return {
+                        i:i,
+                        j:j
+                    };
+                }
+            }
+        }
+        return null;
     }
     
     $('.col').click(function(){
@@ -136,9 +136,12 @@ $(document).ready(function(){
         }else{
             const move = moveAI()
             grid[move.i][move.j] = COMPUTER_TOKEN;
+            setTimeout(() => {
+                $('.col[data-i=' +move.i+ '][data-j=' +move.j+ ']').html(COMPUTER_TOKEN);
+                // $('.col[data-i=' +move.i+ '][data-j=' +move.j+ ']').addClass('clicked');
+                $('.col[data-i=' +move.i+ '][data-j=' +move.j+ ']').addClass('computer');
+            }, 500);
             
-            $('.col[data-i=' +move.i+ '][data-j=' +move.j+ ']').html(COMPUTER_TOKEN);
-            $('.col[data-i=' +move.i+ '][data-j=' +move.j+ ']').addClass('clicked');
         }
         gameState = isGameOver()
         if(gameState){
